@@ -102,8 +102,8 @@ const LandingPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <p className="text-indigo-600 mb-4">
-                  "Uni Bot has been a game-changer for my studies. It's like
-                  having a personal tutor available 24/7!"
+                  Uni Bot has been a game-changer for my studies. Its like
+                  having a personal tutor available 24/7!
                 </p>
                 <p className="font-semibold text-indigo-800">
                   - Sarah J., Biology Major
@@ -111,8 +111,8 @@ const LandingPage = () => {
               </div>
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <p className="text-indigo-600 mb-4">
-                  "I've improved my grades significantly since I started using
-                  Uni Bot. The personalized study plans are amazing!"
+                  Ive improved my grades significantly since I started using Uni
+                  Bot. The personalized study plans are amazing!
                 </p>
                 <p className="font-semibold text-indigo-800">
                   - Mike T., Computer Science Student

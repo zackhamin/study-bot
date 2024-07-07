@@ -74,7 +74,7 @@ const HomePage = () => {
               </li>
               <li className="flex items-center">
                 <MessageSquare className="h-4 w-4 mr-2 text-indigo-600" />
-                <span>Asked about Newton's laws</span>
+                <span>Asked about Newtons laws</span>
               </li>
             </ul>
           </CardContent>

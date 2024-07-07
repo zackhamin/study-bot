@@ -52,7 +52,7 @@ export default withPageAuthRequired(function NotesPage() {
         <Card className="hover:shadow-lg transition-shadow duration-300">
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-indigo-700">
-              Newton's Laws of Motion
+              Newtons Laws of Motion
             </CardTitle>
           </CardHeader>
           <CardContent>
