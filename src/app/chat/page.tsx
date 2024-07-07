@@ -41,6 +41,27 @@ export default withPageAuthRequired(function ChatPage() {
     console.log(messageSaved);
   };
 
+  const saveNote = async (content: string) => {
+    if (!user?.sub) {
+      console.error("User ID not available");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/save-note", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content }),
+      });
+
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+      console.log("Note saved successfully");
+    } catch (error) {
+      console.error("Error saving note:", error);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!message.trim()) return;
@@ -103,6 +124,14 @@ export default withPageAuthRequired(function ChatPage() {
                 }`}
               >
                 {formatText(msg.content)}
+                {!msg.isUser && (
+                  <Button
+                    onClick={() => saveNote(msg.content)}
+                    className="ml-2 bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-1 rounded-lg transition duration-200 ease-in-out"
+                  >
+                    Save to Notes
+                  </Button>
+                )}
               </div>
             </div>
           ))}
