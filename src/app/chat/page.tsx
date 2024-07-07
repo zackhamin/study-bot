@@ -31,16 +31,6 @@ export default withPageAuthRequired(function ChatPage() {
 
   useEffect(scrollToBottom, [messages]);
 
-  const saveMessage = async (content: string, isUser: boolean) => {
-    if (!user?.sub) {
-      console.error("User ID not available");
-      return;
-    }
-
-    const messageSaved = saveMessageToDB(user, content, isUser);
-    console.log(messageSaved);
-  };
-
   const saveNote = async (content: string) => {
     if (!user?.sub) {
       console.error("User ID not available");
@@ -51,7 +41,13 @@ export default withPageAuthRequired(function ChatPage() {
       const res = await fetch("/api/save-note", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content }),
+        body: JSON.stringify({
+          userId: user.sub,
+          content,
+          isUser: false,
+          emai: user.email,
+          name: user.name,
+        }),
       });
 
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -71,8 +67,6 @@ export default withPageAuthRequired(function ChatPage() {
     setIsLoading(true);
 
     try {
-      await saveMessage(message, true);
-
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -84,8 +78,6 @@ export default withPageAuthRequired(function ChatPage() {
       const data = await res.json();
       const aiMessage = { content: data.content, isUser: false };
       setMessages((prev) => [...prev, aiMessage]);
-
-      await saveMessage(data.content, false);
     } catch (error) {
       console.error("Error calling API:", error);
       const errorMessage = {
@@ -93,7 +85,6 @@ export default withPageAuthRequired(function ChatPage() {
         isUser: false,
       };
       setMessages((prev) => [...prev, errorMessage]);
-      await saveMessage(errorMessage.content, false);
     } finally {
       setIsLoading(false);
       setMessage("");
