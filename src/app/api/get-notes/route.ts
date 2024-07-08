@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     // Parse the content field for each message
     const parsedMessages = messages.map((message) => ({
       ...message,
-      content: JSON.parse(message.content),
+      content: JSON.parse(message.content as string),
     }));
 
     return NextResponse.json({ notes: parsedMessages });
