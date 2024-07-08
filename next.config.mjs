@@ -14,6 +14,7 @@ const nextConfig = {
   images: {
     domains: ["lh3.googleusercontent.com"],
   },
+  plugins: "@tailwindcss/typography",
 };
 
 export default nextConfig;

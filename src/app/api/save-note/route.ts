@@ -70,7 +70,6 @@ export async function POST(request: Request) {
       completion.choices[0].message.content as string
     );
 
-    // Save the message with the analyzed content
     const message = await prisma.message.create({
       data: {
         content: JSON.stringify(analysisResult),

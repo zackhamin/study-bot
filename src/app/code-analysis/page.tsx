@@ -58,6 +58,47 @@ export default function CodeAnalysisPage() {
     }
   };
 
+  const renderAnalysis = () => {
+    if (!analysis) return null;
+
+    const sections = analysis.split("\n\n");
+    return sections.map((section, index) => {
+      if (section.startsWith("```")) {
+        const code = section.replace(/```\w*\n/, "").replace(/```$/, "");
+        return (
+          <div key={index} className="mb-4 bg-gray-100 p-4 rounded-md">
+            <pre className="text-sm">
+              <code>{code}</code>
+            </pre>
+          </div>
+        );
+      } else if (
+        section.startsWith("Key points:") ||
+        section.startsWith("Potential improvements")
+      ) {
+        const [title, ...points] = section.split("\n");
+        return (
+          <div key={index} className="mb-4">
+            <h3 className="font-semibold text-lg mb-2">{title}</h3>
+            <ul className="list-disc pl-5">
+              {points.map((point, i) => (
+                <li key={i} className="mb-1">
+                  {point.replace(/^- /, "")}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      } else {
+        return (
+          <p key={index} className="mb-4">
+            {section}
+          </p>
+        );
+      }
+    });
+  };
+
   return (
     <div className="h-screen flex flex-col p-4 overflow-hidden">
       <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
@@ -109,7 +150,7 @@ export default function CodeAnalysisPage() {
             <CardTitle className="text-indigo-700">Analysis Result</CardTitle>
           </CardHeader>
           <CardContent className="flex-grow overflow-auto">
-            <pre className="whitespace-pre-wrap text-gray-800">{analysis}</pre>
+            <div className="prose prose-sm max-w-none">{renderAnalysis()}</div>
           </CardContent>
         </Card>
       </div>
