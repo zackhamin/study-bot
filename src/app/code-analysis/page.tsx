@@ -3,13 +3,31 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Editor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs";
 import "prismjs/components/prism-javascript";
-import "prismjs/themes/prism-okaidia.css"; // Y
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-java";
+import "prismjs/themes/prism-okaidia.css";
+
+const languageOptions = [
+  { value: "javascript", label: "JavaScript" },
+  { value: "python", label: "Python" },
+  { value: "typescript", label: "TypeScript" },
+  { value: "java", label: "Java" },
+];
 
 export default function CodeAnalysisPage() {
   const [code, setCode] = useState("");
+  const [language, setLanguage] = useState("javascript");
   const [analysis, setAnalysis] = useState("");
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
@@ -21,7 +39,7 @@ export default function CodeAnalysisPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ code }),
+        body: JSON.stringify({ code, language }),
       });
 
       if (!response.ok) {
@@ -41,27 +59,40 @@ export default function CodeAnalysisPage() {
   };
 
   return (
-    <div className="container mx-auto p-4 h-screen flex flex-col">
-      <h1 className="text-2xl font-bold mb-4 text-indigo-700">Code Analysis</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow">
-        <Card className="flex flex-col bg-gray-800 border-gray-700">
-          <CardHeader>
+    <div className="h-screen flex flex-col p-4 overflow-hidden">
+      <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
+        <Card className="flex flex-col bg-gray-800 border-gray-700 overflow-hidden">
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-white">Input Code</CardTitle>
+            <Select value={language} onValueChange={setLanguage}>
+              <SelectTrigger className="w-[180px] bg-gray-700 text-white border-gray-600">
+                <SelectValue placeholder="Select Language" />
+              </SelectTrigger>
+              <SelectContent>
+                {languageOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </CardHeader>
-          <CardContent className="flex-grow flex flex-col">
-            <div className="w-full flex-grow overflow-auto bg-[#1e1e1e] rounded-md">
+          <CardContent className="flex-grow flex flex-col overflow-hidden">
+            <div className="flex-grow overflow-auto bg-[#1e1e1e] rounded-md">
               <Editor
                 value={code}
                 onValueChange={(code) => setCode(code)}
-                highlight={(code) => highlight(code, languages.js)}
+                highlight={(code) =>
+                  highlight(code, languages[language], language)
+                }
                 padding={10}
                 style={{
                   fontFamily: '"Fira code", "Fira Mono", monospace',
                   fontSize: 14,
                   backgroundColor: "#1e1e1e",
                   color: "#fff",
+                  minHeight: "100%",
                 }}
-                className="min-h-[300px]"
               />
             </div>
             <Button
@@ -73,16 +104,12 @@ export default function CodeAnalysisPage() {
             </Button>
           </CardContent>
         </Card>
-        <Card className="flex flex-col">
+        <Card className="flex flex-col overflow-hidden">
           <CardHeader>
             <CardTitle className="text-indigo-700">Analysis Result</CardTitle>
           </CardHeader>
-          <CardContent className="flex-grow">
-            <div className="bg-white p-4 rounded-md h-full overflow-auto border border-gray-200">
-              <pre className="whitespace-pre-wrap text-gray-800">
-                {analysis}
-              </pre>
-            </div>
+          <CardContent className="flex-grow overflow-auto">
+            <pre className="whitespace-pre-wrap text-gray-800">{analysis}</pre>
           </CardContent>
         </Card>
       </div>

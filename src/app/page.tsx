@@ -13,38 +13,6 @@ const LandingPage = () => {
   return (
     <>
       <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 text-indigo-900">
-        <header className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2"></div>
-          <nav>
-            <ul className="flex space-x-6">
-              <li>
-                <a
-                  href="#features"
-                  className="text-indigo-600 hover:text-indigo-800 transition-colors"
-                >
-                  Features
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#how-it-works"
-                  className="text-indigo-600 hover:text-indigo-800 transition-colors"
-                >
-                  How It Works
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#testimonials"
-                  className="text-indigo-600 hover:text-indigo-800 transition-colors"
-                >
-                  Testimonials
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </header>
-
         <main>
           {/* Hero Section */}
           <section className="container mx-auto px-6 py-20 text-center">
@@ -90,8 +58,8 @@ const LandingPage = () => {
                     Interactive Learning
                   </h3>
                   <p className="text-indigo-600">
-                    Practice coding with real-time feedback and guidance from
-                    AI.
+                    Save the answers to your questions so you can refer back to
+                    them later!
                   </p>
                 </div>
               </div>

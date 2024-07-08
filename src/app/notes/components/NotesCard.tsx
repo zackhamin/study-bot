@@ -16,6 +16,11 @@ interface NotesCardProps {
 }
 
 export function NotesCard({ title, content = "", tags }: NotesCardProps) {
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) return text;
+    return `${text.slice(0, maxLength)}...`;
+  };
+
   const truncateContent = (text: string, lines: number = 2) => {
     if (!text) return "";
     const words = text.split(" ");
@@ -29,8 +34,8 @@ export function NotesCard({ title, content = "", tags }: NotesCardProps) {
         <Button className="w-full p-0 h-auto" variant="outline">
           <Card className="w-full hover:shadow-lg transition-shadow duration-300 bg-white border border-indigo-100">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-indigo-700">
-                {title || "Untitled Note"}
+              <CardTitle className="text-lg font-semibold text-indigo-700 truncate">
+                {truncateText(title || "Untitled Note", 50)}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -44,7 +49,7 @@ export function NotesCard({ title, content = "", tags }: NotesCardProps) {
                       key={index}
                       className="px-2 py-1 bg-pink-200 text-pink-800 text-xs rounded-full"
                     >
-                      {tag}
+                      {truncateText(tag, 20)}
                     </span>
                   ))
                 ) : (
