@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   ArrowRight,
@@ -9,7 +11,15 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { redirect } from "next/navigation";
 const LandingPage = () => {
+  const { user } = useUser();
+
+  if (user) {
+    redirect("/chat");
+  }
+
   return (
     <>
       <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 text-indigo-900">
