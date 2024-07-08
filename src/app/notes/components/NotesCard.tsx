@@ -27,14 +27,14 @@ export function NotesCard({ title, content = "", tags }: NotesCardProps) {
     <Dialog>
       <DialogTrigger asChild>
         <Button className="w-full p-0 h-auto" variant="outline">
-          <Card className="w-full hover:shadow-lg transition-shadow duration-300">
+          <Card className="w-full hover:shadow-lg transition-shadow duration-300 bg-white border border-indigo-100">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold text-emerald-600">
+              <CardTitle className="text-lg font-semibold text-indigo-700">
                 {title || "Untitled Note"}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-slate-200 line-clamp-2">
+              <p className="text-sm text-indigo-900 line-clamp-2">
                 {truncateContent(content)}
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
@@ -42,42 +42,46 @@ export function NotesCard({ title, content = "", tags }: NotesCardProps) {
                   tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-2 py-1 bg-slate-600 text-emerald-400 text-xs rounded-full"
+                      className="px-2 py-1 bg-pink-200 text-pink-800 text-xs rounded-full"
                     >
                       {tag}
                     </span>
                   ))
                 ) : (
-                  <span className="text-xs text-slate-400">No tags</span>
+                  <span className="text-xs text-indigo-500">No tags</span>
                 )}
               </div>
             </CardContent>
           </Card>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-slate-800 text-slate-200">
+      <DialogContent className="max-w-[80vw] w-[800px] max-h-[80vh] h-[500px] bg-white overflow-hidden">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-emerald-400">
+          <DialogTitle className="text-2xl font-bold text-indigo-700">
             {title || "Untitled Note"}
           </DialogTitle>
         </DialogHeader>
-        <div className="mt-4">
-          <p className="text-slate-300 mb-6 whitespace-pre-wrap">
-            {content || "No content available"}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {tags && tags.length > 0 ? (
-              tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="px-2 py-1 bg-slate-700 text-emerald-400 text-xs rounded-full"
-                >
-                  {tag}
-                </span>
-              ))
-            ) : (
-              <span className="text-xs text-slate-400">No tags</span>
-            )}
+        <div className="mt-4 flex flex-col h-full overflow-hidden">
+          <div className="flex-grow overflow-auto">
+            <p className="text-indigo-900 mb-6 whitespace-pre-wrap">
+              {content || "No content available"}
+            </p>
+          </div>
+          <div className="mt-auto pt-4 border-t border-indigo-100">
+            <div className="flex flex-wrap gap-2">
+              {tags && tags.length > 0 ? (
+                tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="px-2 py-1 bg-pink-200 text-pink-800 text-xs rounded-full"
+                  >
+                    {tag}
+                  </span>
+                ))
+              ) : (
+                <span className="text-xs text-indigo-500">No tags</span>
+              )}
+            </div>
           </div>
         </div>
       </DialogContent>
