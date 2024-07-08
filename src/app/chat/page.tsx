@@ -45,7 +45,7 @@ export default withPageAuthRequired(function ChatPage() {
           userId: user.sub,
           content,
           isUser: false,
-          emai: user.email,
+          email: user.email,
           name: user.name,
         }),
       });

@@ -2,7 +2,7 @@
 const nextConfig = {
   env: {
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
-    OPEN_AI_KEY: process.env.OPEN_AI_KEY,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     GOOGLE_ID: process.env.GOOGLE_ID,
     GOOGLE_SECRET: process.env.GOOGLE_SECRET,
     AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,

@@ -1,105 +1,72 @@
 "use client";
 
-import { Plus, Search, Tag } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
+import React, { useEffect, useState } from "react";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { NotesCard } from "./components/NotesCard";
 
-export default withPageAuthRequired(function NotesPage() {
+type Note = {
+  id: string;
+  content: {
+    title: string;
+    tags: string[];
+    content: string;
+  };
+};
+
+const NotesPage = () => {
+  const { user, error, isLoading } = useUser();
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [fetchError, setFetchError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchNotes = async () => {
+      if (user?.sub) {
+        try {
+          const res = await fetch(
+            `/api/get-notes?userId=${encodeURIComponent(user.sub)}`,
+            {
+              method: "GET",
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+          const data = await res.json();
+          setNotes(data.notes);
+        } catch (error) {
+          console.error("Error fetching notes:", error);
+          setFetchError(error instanceof Error ? error.message : String(error));
+        }
+      }
+    };
+
+    fetchNotes();
+  }, [user]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+  if (fetchError) return <div>Error fetching notes: {fetchError}</div>;
+
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-indigo-800">My Notes</h1>
-        <Button className="bg-purple-600 hover:bg-purple-700 text-white">
-          <Plus className="mr-2 h-4 w-4" /> New Note
-        </Button>
-      </div>
-
-      <div className="flex space-x-4">
-        <Input
-          className="flex-grow"
-          placeholder="Search notes..."
-          type="text"
-        />
-        <Button variant="outline">
-          <Tag className="mr-2 h-4 w-4" /> Filter
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <Card className="hover:shadow-lg transition-shadow duration-300">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-indigo-700">
-              Photosynthesis Process
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-600">
-              Key steps: Light absorption, Water splitting, Carbon fixation...
-            </p>
-            <div className="mt-4 flex space-x-2">
-              <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
-                Biology
-              </span>
-              <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                Plants
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-lg transition-shadow duration-300">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-indigo-700">
-              Newtons Laws of Motion
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-600">
-              1. Law of Inertia, 2. F=ma, 3. Action-Reaction...
-            </p>
-            <div className="mt-4 flex space-x-2">
-              <span className="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">
-                Physics
-              </span>
-              <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">
-                Mechanics
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-lg transition-shadow duration-300">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-indigo-700">
-              Cell Structure
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-600">
-              Organelles: Nucleus, Mitochondria, Golgi apparatus...
-            </p>
-            <div className="mt-4 flex space-x-2">
-              <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
-                Biology
-              </span>
-              <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
-                Cellular
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="flex justify-center">
-        <Button
-          variant="outline"
-          className="text-indigo-600 border-indigo-600 hover:bg-indigo-50"
-        >
-          Load More
-        </Button>
-      </div>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">Your Notes</h1>
+      {notes.length === 0 ? (
+        <p>No notes found. Start creating some!</p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {notes.map((note) => (
+            <NotesCard
+              key={note.id}
+              title={note.content.title}
+              content={note.content.content}
+              tags={note.content.tags}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
-});
+};
+
+export default NotesPage;

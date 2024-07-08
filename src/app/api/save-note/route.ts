@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import OpenAI from "openai";
+
+// Initialize the OpenAI client
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 export async function POST(request: Request) {
   try {
@@ -11,13 +17,11 @@ export async function POST(request: Request) {
     });
 
     if (!user) {
-      // Optionally, create the user if they don't exist
-      // This assumes you have additional user data like email and name
       user = await prisma.user.create({
         data: {
           id: userId,
-          email, 
-          name, 
+          email,
+          name,
         },
       });
     }
@@ -45,16 +49,40 @@ export async function POST(request: Request) {
       });
     }
 
-    // Save the message
+    // Analyze the content using OpenAI
+    const prompt = `Analyze the following content and provide a JSON response with a title summarizing the topic, the original content, and two relevant tags:
+    
+    Content: ${content}
+    
+    Respond only with a JSON object in this format:
+    {
+      "title": "A summary of the content to create a title based on the topic",
+      "content": "The original content, untouched",
+      "tags": ["tag1"]
+    }`;
+
+    const completion = await openai.chat.completions.create({
+      messages: [{ role: "user", content: prompt }],
+      model: "gpt-3.5-turbo",
+    });
+
+    const analysisResult = JSON.parse(
+      completion.choices[0].message.content as string
+    );
+
+    // Save the message with the analyzed content
     const message = await prisma.message.create({
       data: {
-        content: content,
+        content: JSON.stringify(analysisResult),
         isUser: isUser,
         sessionId: session.id,
       },
     });
 
-    return NextResponse.json({ message: "Chat saved successfully" });
+    return NextResponse.json({
+      message: "Chat saved successfully",
+      analysis: analysisResult,
+    });
   } catch (error) {
     console.error("Error in /api/save-chat:", error);
     return NextResponse.json({ error: "Error saving chat" }, { status: 500 });
