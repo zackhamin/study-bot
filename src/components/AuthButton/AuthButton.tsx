@@ -15,7 +15,7 @@ export default function AuthButton() {
     return (
       <Button
         onClick={() => (window.location.href = "/api/auth/logout")}
-        variant="outline"
+        variant="default"
       >
         Logout
       </Button>

@@ -7,10 +7,9 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import saveMessageToDB from "../utils/saveMessageToDB";
 import { Textarea } from "@/components/ui/textarea";
 import { formatText } from "../utils/formatText";
-import { Brain, Send, LogIn } from "lucide-react";
+import { Code, Send, LogIn } from "lucide-react";
 
 interface Message {
   content: string;
@@ -93,15 +92,15 @@ export default withPageAuthRequired(function ChatPage() {
 
   if (isLoading)
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-indigo-500"></div>
+      <div className="flex items-center justify-center h-screen bg-slate-900">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-emerald-500"></div>
       </div>
     );
 
   return (
-    <div className="flex flex-col h-[80vh] bg-gradient-to-br from-indigo-100 to-purple-100">
-      <main className="flex-grow overflow-hidden flex flex-col p-4">
-        <div className="flex-grow overflow-auto bg-white rounded-lg shadow-inner p-4">
+    <div className="flex flex-col h-[calc(100vh-4rem)] bg-slate-800 p-4">
+      <main className="flex flex-col h-full">
+        <div className="flex-grow overflow-auto bg-slate-700 rounded-lg shadow-inner p-4 mb-4">
           {messages.map((msg, index) => (
             <div
               key={index}
@@ -110,15 +109,15 @@ export default withPageAuthRequired(function ChatPage() {
               <div
                 className={`inline-block p-3 rounded-lg max-w-[80%] ${
                   msg.isUser
-                    ? "bg-indigo-500 text-white"
-                    : "bg-purple-100 text-indigo-800"
+                    ? "bg-emerald-600 text-white"
+                    : "bg-slate-600 text-slate-200"
                 }`}
               >
                 {formatText(msg.content)}
                 {!msg.isUser && (
                   <Button
                     onClick={() => saveNote(msg.content)}
-                    className="ml-2 bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-1 rounded-lg transition duration-200 ease-in-out"
+                    className="ml-2 bg-emerald-500 hover:bg-emerald-600 text-white px-2 py-1 rounded-lg transition duration-200 ease-in-out"
                   >
                     Save to Notes
                   </Button>
@@ -129,19 +128,20 @@ export default withPageAuthRequired(function ChatPage() {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="mt-4">
+        <div className="mt-auto">
           {user ? (
             <form onSubmit={handleSubmit} className="flex space-x-2">
               <Textarea
-                placeholder="Ask Uni Bot anything..."
+                placeholder="Ask CodeBuddy anything..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="flex-grow p-2 text-lg border-2 border-indigo-300 rounded-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                className="flex-grow p-2 text-lg bg-slate-700 text-white border-2 border-slate-600 rounded-lg focus:border-emerald-500 focus:ring focus:ring-emerald-200 focus:ring-opacity-50 placeholder-slate-400"
+                rows={2}
               />
               <Button
                 type="submit"
                 disabled={isSessionLoading}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition duration-200 ease-in-out"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg transition duration-200 ease-in-out self-end"
               >
                 {isSessionLoading ? (
                   <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
@@ -153,23 +153,23 @@ export default withPageAuthRequired(function ChatPage() {
           ) : (
             <Popover>
               <PopoverTrigger asChild>
-                <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
+                <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
                   <LogIn className="mr-2 h-5 w-5" />
                   Login to Start Chatting
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-80">
+              <PopoverContent className="w-80 bg-slate-700 border-slate-600">
                 <div className="grid gap-4">
-                  <h3 className="font-medium leading-none text-indigo-800">
+                  <h3 className="font-medium leading-none text-emerald-400">
                     Login Required
                   </h3>
-                  <p className="text-sm text-indigo-600">
+                  <p className="text-sm text-slate-300">
                     Please log in to use the chat feature and start learning
-                    with Uni Bot.
+                    with CodeBuddy.
                   </p>
                   <Button
                     onClick={() => (window.location.href = "/api/auth/login")}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white"
                   >
                     Login
                   </Button>

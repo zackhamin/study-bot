@@ -1,39 +1,43 @@
 import React from "react";
-import { ArrowRight, Book, Brain, MessageSquare, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Code,
+  MessageSquare,
+  Sparkles,
+  Zap,
+  Github,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white">
       <header className="container mx-auto px-6 py-4 flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <Brain className="h-8 w-8 text-indigo-600" />
-          <span className="text-2xl font-bold text-indigo-800">Uni Bot</span>
-        </div>
+        <div className="flex items-center space-x-2"></div>
         <nav>
-          <ul className="flex space-x-4">
+          <ul className="flex space-x-6">
             <li>
               <a
                 href="#features"
-                className="text-indigo-600 hover:text-indigo-800"
+                className="text-slate-300 hover:text-emerald-400 transition-colors"
               >
                 Features
               </a>
             </li>
             <li>
               <a
-                href="#testimonials"
-                className="text-indigo-600 hover:text-indigo-800"
+                href="#how-it-works"
+                className="text-slate-300 hover:text-emerald-400 transition-colors"
               >
-                Testimonials
+                How It Works
               </a>
             </li>
             <li>
               <a
-                href="#pricing"
-                className="text-indigo-600 hover:text-indigo-800"
+                href="#testimonials"
+                className="text-slate-300 hover:text-emerald-400 transition-colors"
               >
-                Pricing
+                Testimonials
               </a>
             </li>
           </ul>
@@ -43,79 +47,152 @@ const LandingPage = () => {
       <main>
         {/* Hero Section */}
         <section className="container mx-auto px-6 py-20 text-center">
-          <h1 className="text-5xl font-bold text-indigo-900 mb-4">
-            Your AI Study Buddy
+          <h1 className="text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500">
+            Master Coding with AI
           </h1>
-          <p className="text-xl text-indigo-700 mb-8">
-            Get instant answers, personalized study plans, and 24/7 support for
-            all your academic needs.
+          <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
+            CodeBuddy: Your personal AI coding mentor. Ask questions, analyze
+            code, and learn programming concepts with ease.
           </p>
-          <Button className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg px-8 py-3">
-            Start Learning Now <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
+          <div className="flex justify-center space-x-4">
+            <Button className="bg-emerald-500 hover:bg-emerald-600 text-white text-lg px-8 py-3">
+              Start Coding Now <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            <Button
+              variant="outline"
+              className="text-emerald-400 border-emerald-400 hover:bg-emerald-400 hover:text-white text-lg px-8 py-3"
+            >
+              Try Demo
+            </Button>
+          </div>
         </section>
 
         {/* Features Section */}
-        <section id="features" className="bg-white py-20">
+        <section id="features" className="bg-slate-800 py-20">
           <div className="container mx-auto px-6">
-            <h2 className="text-3xl font-bold text-center text-indigo-800 mb-12">
-              Why Choose Uni Bot?
+            <h2 className="text-3xl font-bold text-center text-emerald-400 mb-12">
+              Why Choose CodeBuddy?
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              <div className="text-center">
-                <MessageSquare className="h-12 w-12 text-indigo-600 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-indigo-800 mb-2">
-                  24/7 AI Tutor
+              <div className="bg-slate-700 p-6 rounded-lg shadow-lg">
+                <MessageSquare className="h-12 w-12 text-emerald-400 mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  AI-Powered Q&A
                 </h3>
-                <p className="text-indigo-600">
-                  Get instant answers to your questions anytime, anywhere.
+                <p className="text-slate-300">
+                  Get instant answers to your coding questions, explained in
+                  simple terms.
                 </p>
               </div>
-              <div className="text-center">
-                <Book className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-indigo-800 mb-2">
-                  Comprehensive Notes
+              <div className="bg-slate-700 p-6 rounded-lg shadow-lg">
+                <Code className="h-12 w-12 text-blue-400 mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  Code Analysis
                 </h3>
-                <p className="text-indigo-600">
-                  Organize and access your study materials with ease.
+                <p className="text-slate-300">
+                  Understand complex code snippets with AI-generated
+                  explanations.
                 </p>
               </div>
-              <div className="text-center">
-                <Sparkles className="h-12 w-12 text-pink-600 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-indigo-800 mb-2">
-                  Personalized Learning
+              <div className="bg-slate-700 p-6 rounded-lg shadow-lg">
+                <Sparkles className="h-12 w-12 text-purple-400 mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  Interactive Learning
                 </h3>
-                <p className="text-indigo-600">
-                  Tailored study plans based on your progress and goals.
+                <p className="text-slate-300">
+                  Practice coding with real-time feedback and guidance from AI.
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Testimonials Section */}
-        <section id="testimonials" className="bg-indigo-50 py-20">
+        {/* How It Works Section */}
+        <section id="how-it-works" className="py-20">
           <div className="container mx-auto px-6">
-            <h2 className="text-3xl font-bold text-center text-indigo-800 mb-12">
+            <h2 className="text-3xl font-bold text-center text-emerald-400 mb-12">
+              How CodeBuddy Works
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div>
+                <ol className="space-y-6">
+                  <li className="flex items-center space-x-4">
+                    <div className="bg-emerald-500 rounded-full p-2">
+                      <Zap className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-white mb-1">
+                        Ask a Question
+                      </h3>
+                      <p className="text-slate-300">
+                        Type in your coding query or paste a code snippet.
+                      </p>
+                    </div>
+                  </li>
+                  <li className="flex items-center space-x-4">
+                    <div className="bg-blue-500 rounded-full p-2">
+                      <Sparkles className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-white mb-1">
+                        AI Analysis
+                      </h3>
+                      <p className="text-slate-300">
+                        Our AI processes your input and generates a response.
+                      </p>
+                    </div>
+                  </li>
+                  <li className="flex items-center space-x-4">
+                    <div className="bg-purple-500 rounded-full p-2">
+                      <MessageSquare className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-white mb-1">
+                        Get Answers
+                      </h3>
+                      <p className="text-slate-300">
+                        Receive clear explanations and examples to boost your
+                        understanding.
+                      </p>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+              <div className="bg-slate-700 p-6 rounded-lg shadow-lg">
+                <img
+                  src="/api/placeholder/800/600"
+                  alt="CodeBuddy Interface"
+                  className="rounded-lg w-full"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <section id="testimonials" className="bg-slate-800 py-20">
+          <div className="container mx-auto px-6">
+            <h2 className="text-3xl font-bold text-center text-emerald-400 mb-12">
               What Our Users Say
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <p className="text-indigo-600 mb-4">
-                  Uni Bot has been a game-changer for my studies. Its like
-                  having a personal tutor available 24/7!
+              <div className="bg-slate-700 p-6 rounded-lg shadow-lg">
+                <p className="text-slate-300 mb-4">
+                  CodeBuddy has revolutionized my coding journey. The AI
+                  explanations are so clear, its like having a patient tutor
+                  available 24/7!
                 </p>
-                <p className="font-semibold text-indigo-800">
-                  - Sarah J., Biology Major
+                <p className="font-semibold text-emerald-400">
+                  - Alex K., Web Developer
                 </p>
               </div>
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <p className="text-indigo-600 mb-4">
-                  Ive improved my grades significantly since I started using Uni
-                  Bot. The personalized study plans are amazing!
+              <div className="bg-slate-700 p-6 rounded-lg shadow-lg">
+                <p className="text-slate-300 mb-4">
+                  The code analysis feature is a game-changer. It helps me
+                  understand complex algorithms and improve my own coding style.
                 </p>
-                <p className="font-semibold text-indigo-800">
-                  - Mike T., Computer Science Student
+                <p className="font-semibold text-emerald-400">
+                  - Samantha L., Computer Science Student
                 </p>
               </div>
             </div>
@@ -124,42 +201,53 @@ const LandingPage = () => {
 
         {/* CTA Section */}
         <section className="container mx-auto px-6 py-20 text-center">
-          <h2 className="text-3xl font-bold text-indigo-900 mb-4">
-            Ready to Boost Your Academic Performance?
+          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500 mb-4">
+            Ready to Elevate Your Coding Skills?
           </h2>
-          <p className="text-xl text-indigo-700 mb-8">
-            Join thousands of students already excelling with Uni Bot.
+          <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
+            Join thousands of developers already mastering code with CodeBuddys
+            AI assistance.
           </p>
-          <Button className="bg-purple-600 hover:bg-purple-700 text-white text-lg px-8 py-3">
-            Get Started Free <ArrowRight className="ml-2 h-5 w-5" />
+          <Button className="bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white text-lg px-8 py-3">
+            Start Coding for Free <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </section>
       </main>
 
-      <footer className="bg-indigo-800 text-white py-8">
+      <footer className="bg-slate-900 text-white py-8">
         <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
-            <span className="text-2xl font-bold">Uni Bot</span>
-            <p className="text-indigo-200">Your AI-powered study companion</p>
+            <span className="text-2xl font-bold text-emerald-400">
+              CodeBuddy
+            </span>
+            <p className="text-slate-400">Your AI-powered coding companion</p>
           </div>
-          <nav>
-            <ul className="flex space-x-4">
-              <li>
-                <a href="#" className="text-indigo-200 hover:text-white">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-indigo-200 hover:text-white">
-                  Terms of Service
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-indigo-200 hover:text-white">
-                  Contact Us
-                </a>
-              </li>
-            </ul>
+          <nav className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+            <a
+              href="#"
+              className="text-slate-400 hover:text-emerald-400 transition-colors"
+            >
+              Privacy Policy
+            </a>
+            <a
+              href="#"
+              className="text-slate-400 hover:text-emerald-400 transition-colors"
+            >
+              Terms of Service
+            </a>
+            <a
+              href="#"
+              className="text-slate-400 hover:text-emerald-400 transition-colors"
+            >
+              Contact Us
+            </a>
+            <a
+              href="#"
+              className="flex items-center space-x-2 text-slate-400 hover:text-emerald-400 transition-colors"
+            >
+              <Github className="h-5 w-5" />
+              <span>GitHub</span>
+            </a>
           </nav>
         </div>
       </footer>
