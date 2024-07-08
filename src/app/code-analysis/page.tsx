@@ -64,11 +64,23 @@ export default function CodeAnalysisPage() {
     const sections = analysis.split("\n\n");
     return sections.map((section, index) => {
       if (section.startsWith("```")) {
-        const code = section.replace(/```\w*\n/, "").replace(/```$/, "");
+        const [, lang, ...codeLines] = section.split("\n");
+        const code = codeLines.join("\n").replace(/```$/, "");
         return (
-          <div key={index} className="mb-4 bg-gray-100 p-4 rounded-md">
+          <div
+            key={index}
+            className="mb-4 bg-gray-100 p-4 rounded-md overflow-x-auto"
+          >
             <pre className="text-sm">
-              <code>{code}</code>
+              <code
+                dangerouslySetInnerHTML={{
+                  __html: highlight(
+                    code,
+                    languages[lang] || languages.javascript,
+                    lang || "javascript"
+                  ),
+                }}
+              />
             </pre>
           </div>
         );
@@ -124,7 +136,11 @@ export default function CodeAnalysisPage() {
                 value={code}
                 onValueChange={(code) => setCode(code)}
                 highlight={(code) =>
-                  highlight(code, languages[language], language)
+                  highlight(
+                    code,
+                    languages[language] || languages.javascript,
+                    language
+                  )
                 }
                 padding={10}
                 style={{
