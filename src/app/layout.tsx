@@ -90,7 +90,7 @@ export default function RootLayout({
           className={`${inter.className} bg-gradient-to-br from-blue-100 to-purple-100 min-h-screen`}
         >
           <Header />
-          <main className="pt-16">{children}</main>
+          <main className="pt-8">{children}</main>
         </body>
       </html>
     </UserProvider>

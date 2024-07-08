@@ -100,7 +100,7 @@ export default withPageAuthRequired(function ChatPage() {
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] bg-gradient-to-br from-blue-100 to-purple-100 p-4">
       <main className="flex flex-col h-full">
-        <div className="flex-grow overflow-auto bg-white rounded-lg shadow-lg p-4 mb-4">
+        <div className="flex-grow overflow-auto bg-white rounded-lg shadow-lg p-4 mb-2">
           {messages.map((msg, index) => (
             <div
               key={index}

@@ -5,7 +5,8 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-const SYSTEM_PROMPT = `You are an expert programmer and code analyst. Your task is to analyze the provided code and explain what it does or why it might not be working.
+const SYSTEM_PROMPT = `You are an expert programmer and code analyst. Your task is to analyze the 
+provided code and explain what it does or why it might not be working.
 
 1. Your explanations should be clear and easy to understand, even for beginners.
 2. Focus on the main functionality and any potential issues or improvements.

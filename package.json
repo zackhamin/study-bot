@@ -23,14 +23,17 @@
     "next-auth": "^4.24.7",
     "openai": "^4.52.2",
     "prisma": "^5.16.1",
+    "prismjs": "^1.29.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-simple-code-editor": "^0.14.1",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.1"
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/prismjs": "^1.26.4",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",

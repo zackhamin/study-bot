@@ -8,7 +8,7 @@ import {
   Github,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import Image from "next/image";
 const LandingPage = () => {
   return (
     <>
@@ -149,7 +149,15 @@ const LandingPage = () => {
                     </li>
                   </ol>
                 </div>
-                <div className="bg-slate-700 p-6 rounded-lg shadow-lg"></div>
+                <div className="bg-slate-700 p-6 rounded-lg shadow-lg">
+                  <Image src="/code.png" alt="Logo" width={500} height={500} />
+                  <Image
+                    src="/codeTwo.png"
+                    alt="Logo"
+                    width={500}
+                    height={500}
+                  />
+                </div>
               </div>
             </div>
           </section>

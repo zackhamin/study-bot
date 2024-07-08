@@ -2,8 +2,11 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Editor from "react-simple-code-editor";
+import { highlight, languages } from "prismjs";
+import "prismjs/components/prism-javascript";
+import "prismjs/themes/prism-okaidia.css"; // Y
 
 export default function CodeAnalysisPage() {
   const [code, setCode] = useState("");
@@ -39,22 +42,31 @@ export default function CodeAnalysisPage() {
 
   return (
     <div className="container mx-auto p-4 h-screen flex flex-col">
-      <h1 className="text-2xl font-bold mb-4">Code Analysis</h1>
+      <h1 className="text-2xl font-bold mb-4 text-indigo-700">Code Analysis</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow">
-        <Card className="flex flex-col">
+        <Card className="flex flex-col bg-gray-800 border-gray-700">
           <CardHeader>
-            <CardTitle>Input Code</CardTitle>
+            <CardTitle className="text-white">Input Code</CardTitle>
           </CardHeader>
           <CardContent className="flex-grow flex flex-col">
-            <Textarea
-              placeholder="Paste your code here..."
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="w-full flex-grow font-mono resize-none"
-            />
+            <div className="w-full flex-grow overflow-auto bg-[#1e1e1e] rounded-md">
+              <Editor
+                value={code}
+                onValueChange={(code) => setCode(code)}
+                highlight={(code) => highlight(code, languages.js)}
+                padding={10}
+                style={{
+                  fontFamily: '"Fira code", "Fira Mono", monospace',
+                  fontSize: 14,
+                  backgroundColor: "#1e1e1e",
+                  color: "#fff",
+                }}
+                className="min-h-[300px]"
+              />
+            </div>
             <Button
               onClick={analyzeCode}
-              className="mt-4"
+              className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white"
               disabled={isAnalyzing}
             >
               {isAnalyzing ? "Analyzing..." : "Analyze Code"}
@@ -63,11 +75,13 @@ export default function CodeAnalysisPage() {
         </Card>
         <Card className="flex flex-col">
           <CardHeader>
-            <CardTitle>Analysis Result</CardTitle>
+            <CardTitle className="text-indigo-700">Analysis Result</CardTitle>
           </CardHeader>
           <CardContent className="flex-grow">
-            <div className="bg-gray-100 p-4 rounded-md h-full overflow-auto">
-              <pre className="whitespace-pre-wrap">{analysis}</pre>
+            <div className="bg-white p-4 rounded-md h-full overflow-auto border border-gray-200">
+              <pre className="whitespace-pre-wrap text-gray-800">
+                {analysis}
+              </pre>
             </div>
           </CardContent>
         </Card>

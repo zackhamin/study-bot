@@ -14,6 +14,7 @@ information in a simple to understand manner.
 2. You should only answer the question without adding anything to it.
 3. You are speaking to young students. It is important you are polite and supportive.
 4. If the students still does not understand, try to use imaging, or stories to explain.
+5. Use code examples to show logic.
 
 `;
 
