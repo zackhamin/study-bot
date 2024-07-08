@@ -10,6 +10,7 @@ const nextConfig = {
     AUTH0_ISSUER_BASE_URL: process.env.AUTH0_ISSUER_BASE_URL,
     AUTH0_BASE_URL: process.env.AUTH0_BASE_URL,
     AUTH0_SECRET: process.env.AUTH0_SECRET,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
   images: {
     domains: ["lh3.googleusercontent.com"],

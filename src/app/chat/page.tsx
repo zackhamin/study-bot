@@ -10,6 +10,12 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { formatText } from "../utils/formatText";
 import { Code, Send, LogIn } from "lucide-react";
+import { highlight, languages } from "prismjs";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-java";
+import "prismjs/components/prism-csharp";
+import "prismjs/themes/prism.css";
 
 interface Message {
   content: string;
@@ -90,6 +96,84 @@ export default withPageAuthRequired(function ChatPage() {
     }
   };
 
+  const renderMessageContent = (content: string) => {
+    const codeBlockRegex = /```(\w+)?\n([\s\S]*?)```/g;
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = codeBlockRegex.exec(content)) !== null) {
+      if (match.index > lastIndex) {
+        parts.push(
+          <div key={lastIndex} className="mb-2">
+            {formatText(content.slice(lastIndex, match.index))}
+          </div>
+        );
+      }
+
+      const language = match[1] || "javascript";
+      const code = match[2];
+
+      parts.push(
+        <div
+          key={match.index}
+          className="bg-gray-100 p-4 rounded-md overflow-x-auto mb-2"
+        >
+          <pre className="text-sm">
+            <code
+              dangerouslySetInnerHTML={{
+                __html: highlight(
+                  code,
+                  languages[language] || languages.javascript,
+                  language
+                ),
+              }}
+            />
+          </pre>
+        </div>
+      );
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    if (lastIndex < content.length) {
+      parts.push(
+        <div key={lastIndex} className="mb-2">
+          {formatText(content.slice(lastIndex))}
+        </div>
+      );
+    }
+
+    return parts;
+  };
+
+  const renderMessage = (msg: Message, index: number) => {
+    const messageClass = msg.isUser
+      ? "bg-indigo-200 text-indigo-900"
+      : "bg-pink-200 text-pink-900";
+
+    return (
+      <div
+        key={index}
+        className={`mb-4 ${msg.isUser ? "text-right" : "text-left"}`}
+      >
+        <div
+          className={`inline-block p-3 rounded-lg max-w-[80%] ${messageClass}`}
+        >
+          {renderMessageContent(msg.content)}
+          {!msg.isUser && (
+            <Button
+              onClick={() => saveNote(msg.content)}
+              className="mt-2 bg-indigo-500 hover:bg-indigo-600 text-white px-2 py-1 rounded-lg transition duration-200 ease-in-out"
+            >
+              Save to Notes
+            </Button>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   if (isLoading)
     return (
       <div className="flex items-center justify-center h-screen bg-gradient-to-br from-blue-100 to-purple-100">
@@ -101,30 +185,7 @@ export default withPageAuthRequired(function ChatPage() {
     <div className="flex flex-col h-[calc(100vh-4rem)] bg-gradient-to-br from-blue-100 to-purple-100 p-4">
       <main className="flex flex-col h-full">
         <div className="flex-grow overflow-auto bg-white rounded-lg shadow-lg p-4 mb-2">
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`mb-4 ${msg.isUser ? "text-right" : "text-left"}`}
-            >
-              <div
-                className={`inline-block p-3 rounded-lg max-w-[80%] ${
-                  msg.isUser
-                    ? "bg-indigo-200 text-indigo-900"
-                    : "bg-pink-200 text-pink-900"
-                }`}
-              >
-                {formatText(msg.content)}
-                {!msg.isUser && (
-                  <Button
-                    onClick={() => saveNote(msg.content)}
-                    className="ml-2 bg-indigo-500 hover:bg-indigo-600 text-white px-2 py-1 rounded-lg transition duration-200 ease-in-out"
-                  >
-                    Save to Notes
-                  </Button>
-                )}
-              </div>
-            </div>
-          ))}
+          {messages.map((msg, index) => renderMessage(msg, index))}
           <div ref={messagesEndRef} />
         </div>
 
