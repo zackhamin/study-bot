@@ -194,19 +194,19 @@ const LandingPage = () => {
             </div>
             <nav className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
               <a
-                href="#"
+                href="/privacy-policy"
                 className="text-slate-400 hover:text-emerald-400 transition-colors"
               >
                 Privacy Policy
               </a>
               <a
-                href="#"
+                href="/terms-of-service"
                 className="text-slate-400 hover:text-emerald-400 transition-colors"
               >
                 Terms of Service
               </a>
               <a
-                href="#"
+                href="/contact"
                 className="text-slate-400 hover:text-emerald-400 transition-colors"
               >
                 Contact Us
