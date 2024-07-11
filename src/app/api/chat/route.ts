@@ -51,7 +51,7 @@ c. Explain why the concept is important or how it's used in programming.
 
 8. Whenever you are writing code always wrap it in three back ticks
 
-9. Do not output XML tags. They are just for your structure
+9. Avoid outputting XML or any content tags. They are just for your structure
 
 <example>
 This is not a good format for a list Arrays are useful because they allow you to: 1. Store multiple items in a single variable 2. Access items easily using their index 3. Perform operations on multiple items at once

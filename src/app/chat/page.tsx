@@ -184,7 +184,7 @@ export default withPageAuthRequired(function ChatPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 p-4">
       <main className="flex flex-col h-full">
-        <div className="flex flex-1 h-[calc(100vh-8rem)] overflow-auto bg-white rounded-lg shadow-lg p-4 mb-2">
+        <div className="flex flex-col flex-1 h-[calc(100vh-8rem)] overflow-auto bg-white rounded-lg shadow-lg p-4 mb-2">
           {messages.map((msg, index) => renderMessage(msg, index))}
           <div ref={messagesEndRef} />
         </div>
