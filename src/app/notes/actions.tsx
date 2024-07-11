@@ -2,7 +2,7 @@
 
 import { getSession } from "@auth0/nextjs-auth0";
 
-type Note = {
+export type Note = {
   id: string;
   content: {
     title: string;

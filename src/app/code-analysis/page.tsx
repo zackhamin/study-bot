@@ -112,7 +112,7 @@ export default function CodeAnalysisPage() {
   };
 
   return (
-    <div className="h-screen flex flex-col p-4 overflow-hidden">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 p-4 overflow-hidden">
       <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4 overflow-hidden">
         <Card className="flex flex-col bg-gray-800 border-gray-700 overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between">
