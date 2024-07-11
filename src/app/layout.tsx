@@ -157,7 +157,7 @@ function Layout({ children }: { children: React.ReactNode }) {
           user ? "ml-16 lg:ml-64" : "ml-0"
         )}
       >
-        <Header />
+        {!user && <Header />}
         <main
           className={cn(
             "pt-20 p-8 min-h-screen",
