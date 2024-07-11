@@ -128,12 +128,19 @@ const LandingPage = () => {
                   </ol>
                 </div>
                 <div className="bg-slate-700 p-6 rounded-lg shadow-lg">
-                  <Image src="/code.png" alt="Logo" width={500} height={500} />
+                  <Image
+                    src="/code.png"
+                    alt="Logo"
+                    width={500}
+                    height={500}
+                    className="rounded-md mb-2"
+                  />
                   <Image
                     src="/codeTwo.png"
                     alt="Logo"
                     width={500}
                     height={500}
+                    className="rounded-md"
                   />
                 </div>
               </div>
