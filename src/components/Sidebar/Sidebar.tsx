@@ -26,11 +26,11 @@ function Sidebar({ isCollapsed, toggleCollapse }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "bg-white h-screen fixed left-0 top-0 shadow-lg transition-all duration-300",
+        "bg-white h-screen fixed left-0 top-0 shadow-lg transition-all duration-300 flex flex-col",
         isCollapsed ? "w-16" : "w-64"
       )}
     >
-      <div className="p-4 flex justify-between items-center">
+      <div className="p-4 flex items-center">
         {!isCollapsed && (
           <div className="flex items-center space-x-2">
             <Code className="h-8 w-8 text-indigo-600" />
@@ -39,24 +39,14 @@ function Sidebar({ isCollapsed, toggleCollapse }: SidebarProps) {
             </span>
           </div>
         )}
-        <button
-          onClick={toggleCollapse}
-          className="p-2 rounded-full hover:bg-gray-200 transition-colors"
-        >
-          {isCollapsed ? (
-            <ChevronRight className="h-5 w-5" />
-          ) : (
-            <ChevronLeft className="h-5 w-5" />
-          )}
-        </button>
       </div>
-      <nav>
+      <nav className="flex-grow relative">
         <SidebarLink
           href="/chat"
           icon={MessageSquare}
           isCollapsed={isCollapsed}
         >
-          Chat
+          Learn
         </SidebarLink>
         <SidebarLink href="/notes" icon={BookOpen} isCollapsed={isCollapsed}>
           Notes
@@ -71,18 +61,29 @@ function Sidebar({ isCollapsed, toggleCollapse }: SidebarProps) {
         <SidebarLink href="/contact" icon={Phone} isCollapsed={isCollapsed}>
           Contact
         </SidebarLink>
-
-        <div className={cn("p-4 flex justify-between items-center")}>
-          <Image
-            src={user.picture as string}
-            alt={user.name || "User"}
-            width={40}
-            height={40}
-            className="rounded-full border-2 border-indigo-400"
-          />
-          {!isCollapsed && <AuthButton />}
-        </div>
       </nav>
+
+      <div className={cn("p-4 flex justify-between items-center mt-auto")}>
+        <Image
+          src={user.picture as string}
+          alt={user.name || "User"}
+          width={40}
+          height={40}
+          className="rounded-full border-2 border-indigo-400"
+        />
+        {!isCollapsed && <AuthButton />}
+      </div>
+
+      <button
+        onClick={toggleCollapse}
+        className="absolute top-1/2 -right-4 transform -translate-y-1/2 bg-white rounded-full p-1 shadow-md hover:bg-gray-100 transition-colors"
+      >
+        {isCollapsed ? (
+          <ChevronRight className="h-6 w-6 text-gray-600" />
+        ) : (
+          <ChevronLeft className="h-6 w-6 text-gray-600" />
+        )}
+      </button>
     </aside>
   );
 }

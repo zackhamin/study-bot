@@ -1,22 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { UserProvider, useUser } from "@auth0/nextjs-auth0/client";
-import AuthButton from "@/components/AuthButton/AuthButton";
-import Link from "next/link";
-import Image from "next/image";
-import {
-  Code,
-  MessageSquare,
-  BookOpen,
-  Phone,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 import Layout from "@/components/Layout/Layout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,13 +13,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const queryClient = new QueryClient();
   return (
     <html lang="en">
-      <UserProvider>
-        <body>
-          <Layout>{children}</Layout>
-        </body>
-      </UserProvider>
+      <QueryClientProvider client={queryClient}>
+        <UserProvider>
+          <body>
+            <Layout>{children}</Layout>
+          </body>
+        </UserProvider>
+      </QueryClientProvider>
     </html>
   );
 }

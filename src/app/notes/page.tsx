@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Note, getNotes } from "./actions";
 import { NotesCard } from "./components/NotesCard";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import { Input } from "@/components/ui/input"; // Import the Input component
+import { PlusCircle, Search } from "lucide-react"; // Import the Search icon
 import {
   Dialog,
   DialogContent,
@@ -18,6 +19,7 @@ export default function NotesPage() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [error, setError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     async function fetchNotes() {
@@ -33,19 +35,24 @@ export default function NotesPage() {
 
   if (error) return <div>Error fetching notes: {error}</div>;
 
-  const handleNoteCreated = (newNote: Note) => {
-    setNotes((prevNotes) => [...prevNotes, newNote]);
-    setIsOpen(false);
-  };
-
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 p-4">
-      <div className="flex flex-row-reverse items-center mb-6">
+    <div className="flex flex-col px-4 py-8  bg-gradient-to-br from-blue-100 to-purple-100">
+      <div className="flex justify-between items-center mb-6">
+        <div className="relative w-full max-w-sm">
+          <Input
+            type="text"
+            placeholder="Search notes..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 pr-4 py-2 w-full"
+          />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+        </div>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
             <Button
               variant="outline"
-              className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition duration-200 ease-in-out self-end"
+              className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition duration-200 ease-in-out"
             >
               <PlusCircle className="mr-2 h-4 w-4" />
               Add Note
