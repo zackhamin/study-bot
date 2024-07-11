@@ -29,7 +29,7 @@ function Sidebar() {
   return (
     <aside
       className={cn(
-        "bg-white h-screen fixed left-0 top-0 shadow-lg transition-all duration-300",
+        "bg-white h-screen fixed left-0 top-0 shadow-lg transition-all duration-300 flex flex-col",
         isCollapsed ? "w-16" : "w-64"
       )}
     >
@@ -53,7 +53,7 @@ function Sidebar() {
           )}
         </button>
       </div>
-      <nav className="mt-8">
+      <nav className="mt-8 flex-grow">
         <SidebarLink
           href="/chat"
           icon={MessageSquare}
@@ -75,8 +75,13 @@ function Sidebar() {
           Contact
         </SidebarLink>
       </nav>
-      <div className="absolute bottom-0 left-0 right-0 p-4">
-        <div className="flex items-center space-x-2">
+      <div className="p-4">
+        <div
+          className={cn(
+            "flex items-center",
+            isCollapsed ? "justify-center" : "space-x-2"
+          )}
+        >
           <Image
             src={user.picture as string}
             alt={user.name || "User"}
@@ -121,19 +126,19 @@ function Header() {
   const siteTitle = process.env.NEXT_PUBLIC_SITE_TITLE || "CodeBuddy";
 
   return (
-    <header className="flex items-center space-x-2">
+    <header
+      className={cn(
+        "bg-white shadow-sm p-4 fixed top-0 right-0 left-0",
+        user ? "left-16 lg:left-64" : "left-0"
+      )}
+    >
       <div className="flex justify-between items-center">
-        {!user && (
-          <div
-            className={cn("bg-white shadow-sm p-4 fixed top-0 right-0 left-0")}
-          >
-            <Code className="h-8 w-8 text-indigo-600" />
-            <span className="text-2xl font-bold text-indigo-700">
-              {siteTitle}
-            </span>
-          </div>
-        )}
-        <div className="flex-1">{/* Add a search input here if needed */}</div>
+        <div className="flex items-center space-x-2">
+          <Code className="h-8 w-8 text-indigo-600" />
+          <span className="text-2xl font-bold text-indigo-700">
+            {siteTitle}
+          </span>
+        </div>
         {!user && <AuthButton />}
       </div>
     </header>
@@ -146,11 +151,16 @@ function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Sidebar />
-      <div className={cn(user ? "ml-16 lg:ml-64" : "ml-0")}>
+      <div
+        className={cn(
+          "transition-all duration-300",
+          user ? "ml-16 lg:ml-64" : "ml-0"
+        )}
+      >
         <Header />
         <main
           className={cn(
-            "pt-20 p-8 bg-gray-50 min-h-screen",
+            "pt-20 p-8 min-h-screen",
             !user && "bg-gradient-to-br from-blue-100 to-purple-100"
           )}
         >
