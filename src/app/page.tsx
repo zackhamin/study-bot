@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import {
   ArrowRight,
@@ -13,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { redirect } from "next/navigation";
+
 const LandingPage = () => {
   const { user } = useUser();
 
@@ -21,216 +21,221 @@ const LandingPage = () => {
   }
 
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 text-indigo-900">
-        <main>
-          {/* Hero Section */}
-          <section className="container mx-auto px-6 py-20 text-center">
-            <h1 className="text-5xl font-bold mb-4 text-indigo-800">
-              Master Coding with AI
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 to-purple-800 text-white">
+      <header className="container mx-auto px-6 py-8 flex justify-between items-center">
+        <div className="text-3xl font-bold text-white">CodeBuddy</div>
+        <nav>
+          <Button variant="ghost" className="text-white hover:text-indigo-200">
+            Features
+          </Button>
+          <Button variant="ghost" className="text-white hover:text-indigo-200">
+            How It Works
+          </Button>
+          <Button variant="ghost" className="text-white hover:text-indigo-200">
+            Testimonials
+          </Button>
+          <Button
+            variant="outline"
+            className="ml-4 text-white border-white hover:bg-white hover:text-indigo-900"
+          >
+            Sign Up
+          </Button>
+        </nav>
+      </header>
+
+      <main>
+        {/* Hero Section */}
+        <section className="container mx-auto px-6 py-20 flex items-center justify-between">
+          <div className="w-1/2">
+            <h1 className="text-5xl font-bold mb-6 leading-tight">
+              Master Coding with Your Personal AI Tutor
             </h1>
-            <p className="text-xl text-indigo-600 mb-8 max-w-2xl mx-auto">
-              CodeBuddy: Your personal AI coding mentor. Ask questions, analyze
-              code, and learn programming concepts with ease.
+            <p className="text-xl mb-8 text-indigo-200">
+              CodeBuddy: Your AI coding mentor. Ask questions, analyze code, and
+              learn programming concepts with ease.
             </p>
-          </section>
-
-          {/* Features Section */}
-          <section id="features" className="bg-white py-20">
-            <div className="container mx-auto px-6">
-              <h2 className="text-3xl font-bold text-center text-indigo-800 mb-12">
-                Why Choose CodeBuddy?
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                <div className="bg-blue-100 p-6 rounded-lg shadow-lg">
-                  <MessageSquare className="h-12 w-12 text-indigo-600 mb-4" />
-                  <h3 className="text-xl font-semibold text-indigo-700 mb-2">
-                    AI-Powered Q&A
-                  </h3>
-                  <p className="text-indigo-600">
-                    Get instant answers to your coding questions, explained in
-                    simple terms.
-                  </p>
-                </div>
-                <div className="bg-purple-100 p-6 rounded-lg shadow-lg">
-                  <Code className="h-12 w-12 text-indigo-600 mb-4" />
-                  <h3 className="text-xl font-semibold text-indigo-700 mb-2">
-                    Code Analysis
-                  </h3>
-                  <p className="text-indigo-600">
-                    Understand complex code snippets with AI-generated
-                    explanations.
-                  </p>
-                </div>
-                <div className="bg-pink-100 p-6 rounded-lg shadow-lg">
-                  <Sparkles className="h-12 w-12 text-indigo-600 mb-4" />
-                  <h3 className="text-xl font-semibold text-indigo-700 mb-2">
-                    Interactive Learning
-                  </h3>
-                  <p className="text-indigo-600">
-                    Save the answers to your questions so you can refer back to
-                    them later!
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* How It Works Section */}
-          <section id="how-it-works" className="py-20">
-            <div className="container mx-auto px-6">
-              <h2 className="text-3xl font-bold text-center text-emerald-400 mb-12">
-                How CodeBuddy Works
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div>
-                  <ol className="space-y-6">
-                    <li className="flex items-center space-x-4">
-                      <div className="bg-emerald-500 rounded-full p-2">
-                        <Zap className="h-6 w-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-600 mb-1">
-                          Ask a Question
-                        </h3>
-                        <p className="text-slate-800">
-                          Type in your coding query or paste a code snippet.
-                        </p>
-                      </div>
-                    </li>
-                    <li className="flex items-center space-x-4">
-                      <div className="bg-blue-500 rounded-full p-2">
-                        <Sparkles className="h-6 w-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-600 mb-1">
-                          AI Analysis
-                        </h3>
-                        <p className="text-slate-800">
-                          Our AI processes your input and generates a response.
-                        </p>
-                      </div>
-                    </li>
-                    <li className="flex items-center space-x-4">
-                      <div className="bg-purple-500 rounded-full p-2">
-                        <MessageSquare className="h-6 w-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-600 mb-1">
-                          Get Answers
-                        </h3>
-                        <p className="text-slate-800">
-                          Receive clear explanations and examples to boost your
-                          understanding.
-                        </p>
-                      </div>
-                    </li>
-                  </ol>
-                </div>
-                <div className="bg-slate-700 p-6 rounded-lg shadow-lg">
-                  <Image
-                    src="/code.png"
-                    alt="Logo"
-                    width={500}
-                    height={500}
-                    className="rounded-md mb-2"
-                  />
-                  <Image
-                    src="/codeTwo.png"
-                    alt="Logo"
-                    width={500}
-                    height={500}
-                    className="rounded-md"
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Testimonials Section */}
-          <section id="testimonials" className="bg-slate-800 py-20">
-            <div className="container mx-auto px-6">
-              <h2 className="text-3xl font-bold text-center text-emerald-400 mb-12">
-                What Our Users Say
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-slate-700 p-6 rounded-lg shadow-lg">
-                  <p className="text-slate-300 mb-4">
-                    CodeBuddy has revolutionized my coding journey. The AI
-                    explanations are so clear, its like having a patient tutor
-                    available 24/7!
-                  </p>
-                  <p className="font-semibold text-emerald-400">
-                    - Alex K., Web Developer
-                  </p>
-                </div>
-                <div className="bg-slate-700 p-6 rounded-lg shadow-lg">
-                  <p className="text-slate-300 mb-4">
-                    The code analysis feature is a game-changer. It helps me
-                    understand complex algorithms and improve my own coding
-                    style.
-                  </p>
-                  <p className="font-semibold text-emerald-400">
-                    - Samantha L., Computer Science Student
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="container mx-auto px-6 py-20 text-center">
-            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500 mb-4">
-              Ready to Elevate Your Coding Skills?
-            </h2>
-            <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-              Join thousands of developers already mastering code with
-              CodeBuddys AI assistance.
-            </p>
-            <Button className="bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white text-lg px-8 py-3">
-              Start Coding for Free <ArrowRight className="ml-2 h-5 w-5" />
+            <Button className="bg-blue-400 hover:bg-blue-600 text-white text-lg px-8 py-3 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+              Start Learning Now <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-          </section>
-        </main>
-        <footer className="from-blue-100 to-purple-100 text-indigo-90 py-8">
-          <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-4 md:mb-0">
-              <span className="text-2xl font-bold text-emerald-400">
-                CodeBuddy
-              </span>
-              <p className="text-slate-400">Your AI-powered coding companion</p>
-            </div>
-            <nav className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-              <a
-                href="/privacy-policy"
-                className="text-slate-400 hover:text-emerald-400 transition-colors"
-              >
-                Privacy Policy
-              </a>
-              <a
-                href="/terms-of-service"
-                className="text-slate-400 hover:text-emerald-400 transition-colors"
-              >
-                Terms of Service
-              </a>
-              <a
-                href="/contact"
-                className="text-slate-400 hover:text-emerald-400 transition-colors"
-              >
-                Contact Us
-              </a>
-              <a
-                href="#"
-                className="flex items-center space-x-2 text-slate-400 hover:text-emerald-400 transition-colors"
-              >
-                <Github className="h-5 w-5" />
-                <span>GitHub</span>
-              </a>
-            </nav>
           </div>
-        </footer>
-      </div>
-    </>
+          <div className="w-1/2">
+            <Image
+              src="/codeFour.png"
+              alt="CodeBuddy in action"
+              width={600}
+              height={400}
+              className="rounded-lg shadow-2xl"
+            />
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section id="features" className="bg-white py-20">
+          <div className="container mx-auto px-6">
+            <h2 className="text-3xl font-bold text-center text-indigo-900 mb-12">
+              Why Choose CodeBuddy?
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              <FeatureCard
+                icon={<MessageSquare className="h-12 w-12 text-emerald-500" />}
+                title="AI-Powered Q&A"
+                description="Get instant answers to your coding questions, explained in simple terms."
+              />
+              <FeatureCard
+                icon={<Code className="h-12 w-12 text-emerald-500" />}
+                title="Code Analysis"
+                description="Understand complex code snippets by typing or pasting them in."
+              />
+              <FeatureCard
+                icon={<Sparkles className="h-12 w-12 text-emerald-500" />}
+                title="Interactive Learning"
+                description="Save answers to your questions for future reference and continuous learning."
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* How It Works Section */}
+        <section
+          id="how-it-works"
+          className="py-20 bg-gradient-to-br from-indigo-800 to-purple-700"
+        >
+          <div className="container mx-auto px-6">
+            <h2 className="text-3xl font-bold text-center text-white mb-12">
+              How CodeBuddy Works
+            </h2>
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div className="md:w-1/2 mb-8 md:mb-0">
+                <ol className="space-y-8">
+                  <HowItWorksStep
+                    icon={<Zap className="h-6 w-6 text-emerald-400" />}
+                    title="Ask a Question"
+                    description="Type in your coding query or paste a code snippet."
+                  />
+                  <HowItWorksStep
+                    icon={<Sparkles className="h-6 w-6 text-emerald-400" />}
+                    title="AI Analysis"
+                    description="Our AI processes your input and generates a response."
+                  />
+                  <HowItWorksStep
+                    icon={
+                      <MessageSquare className="h-6 w-6 text-emerald-400" />
+                    }
+                    title="Get Answers"
+                    description="Receive clear explanations and examples to boost your understanding."
+                  />
+                </ol>
+              </div>
+              <div className="l:w-1/2">
+                <Image
+                  src="/codeThree.png"
+                  alt="CodeBuddy Analysis"
+                  width={1000}
+                  height={1000}
+                  className="rounded-lg shadow-2xl"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials Section */}
+        <section id="testimonials" className="bg-white py-20">
+          <div className="container mx-auto px-6">
+            <h2 className="text-3xl font-bold text-center text-indigo-900 mb-12">
+              What Our Users Say
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <TestimonialCard
+                quote="CodeBuddy has revolutionized my coding journey. The AI explanations are so clear, it's like having a patient tutor available 24/7!"
+                author="Alex K., Web Developer"
+              />
+              <TestimonialCard
+                quote="The code analysis feature is a game-changer. It helps me understand complex algorithms and improve my own coding style."
+                author="Samantha L., Computer Science Student"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="container mx-auto px-6 py-20 text-center">
+          <h2 className="text-4xl font-bold mb-6 text-white">
+            Ready to Elevate Your Coding Skills?
+          </h2>
+          <p className="text-xl text-indigo-200 mb-8 max-w-2xl mx-auto">
+            Join thousands of developers already mastering code with CodeBuddys
+            AI assistance.
+          </p>
+          <Button className="bg-blue-400 hover:bg-blue-600 text-white text-lg px-8 py-3 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+            Start Learning
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>
+        </section>
+      </main>
+
+      <footer className="bg-indigo-900 text-white py-12">
+        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+          <div className="mb-8 md:mb-0">
+            <span className="text-2xl font-bold">CodeBuddy</span>
+            <p className="text-indigo-300">Your AI-powered coding companion</p>
+          </div>
+          <nav className="flex flex-wrap justify-center md:justify-end space-x-6">
+            <a
+              href="/privacy-policy"
+              className="text-indigo-300 hover:text-white transition-colors"
+            >
+              Privacy Policy
+            </a>
+            <a
+              href="/terms-of-service"
+              className="text-indigo-300 hover:text-white transition-colors"
+            >
+              Terms of Service
+            </a>
+            <a
+              href="/contact"
+              className="text-indigo-300 hover:text-white transition-colors"
+            >
+              Contact Us
+            </a>
+            <a
+              href="#"
+              className="flex items-center space-x-2 text-indigo-300 hover:text-white transition-colors"
+            >
+              <Github className="h-5 w-5" />
+              <span>GitHub</span>
+            </a>
+          </nav>
+        </div>
+      </footer>
+    </div>
   );
 };
+
+const FeatureCard = ({ icon, title, description }: any) => (
+  <div className="bg-indigo-50 p-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl">
+    <div className="mb-4">{icon}</div>
+    <h3 className="text-xl font-semibold text-indigo-900 mb-2">{title}</h3>
+    <p className="text-indigo-700">{description}</p>
+  </div>
+);
+
+const HowItWorksStep = ({ icon, title, description }: any) => (
+  <li className="flex items-center space-x-4">
+    <div className="bg-emerald-500 rounded-full p-2">{icon}</div>
+    <div>
+      <h3 className="text-xl font-semibold text-white mb-1">{title}</h3>
+      <p className="text-indigo-200">{description}</p>
+    </div>
+  </li>
+);
+
+const TestimonialCard = ({ quote, author }: any) => (
+  <div className="bg-indigo-50 p-6 rounded-lg shadow-lg">
+    <p className="text-indigo-800 mb-4 italic">{quote}</p>
+    <p className="font-semibold text-indigo-600">- {author}</p>
+  </div>
+);
 
 export default LandingPage;
