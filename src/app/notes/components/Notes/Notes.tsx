@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { NotesCard } from "../NotesCard";
 import { Button } from "@/components/ui/button";
@@ -16,10 +16,13 @@ import {
 import { CreateNote } from "../CreateNote";
 import { Note } from "@/types";
 import { searchNotes } from "../../actions";
+import { ToastContainerWrapper, showToast } from "@/components/Notification";
 
 export interface NotesPageProps {
   initialNotes: Note[];
 }
+
+export type ToastState = "Success" | "Error" | undefined;
 
 export default function NotesPage({ initialNotes }: NotesPageProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +30,14 @@ export default function NotesPage({ initialNotes }: NotesPageProps) {
   const [notes, setNotes] = useState(initialNotes);
   const [isSearching, setIsSearching] = useState(false);
   const { user } = useUser();
+
+  const handleToast = useCallback((state: ToastState) => {
+    if (state === "Success") {
+      showToast({ message: "Note Saved!", type: "success" });
+    } else if (state === "Error") {
+      showToast({ message: "Unable to save", type: "error" });
+    }
+  }, []);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -38,7 +49,7 @@ export default function NotesPage({ initialNotes }: NotesPageProps) {
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm]);
+  }, [searchTerm, initialNotes]);
 
   const handleSearch = async () => {
     if (!user?.sub) {
@@ -57,8 +68,17 @@ export default function NotesPage({ initialNotes }: NotesPageProps) {
     }
   };
 
+  const handleNoteCreated = useCallback(() => {
+    setIsOpen(false);
+    handleToast("Success");
+  }, [handleToast]);
+
+  const handleNoteFailed = useCallback(() => {
+    handleToast("Error");
+  }, [handleToast]);
+
   return (
-    <div className="flex flex-col px-4 py-8 h-screen bg-gradient-to-br from-blue-100 to-purple-100">
+    <div className="flex flex-col px-4 py-8 h-full bg-gradient-to-br from-blue-100 to-purple-100">
       <div className="flex justify-between items-center mb-6">
         <div className="relative w-full max-w-sm">
           <Input
@@ -70,6 +90,7 @@ export default function NotesPage({ initialNotes }: NotesPageProps) {
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
         </div>
+        <ToastContainerWrapper />
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
             <Button
@@ -84,7 +105,10 @@ export default function NotesPage({ initialNotes }: NotesPageProps) {
             <DialogHeader>
               <DialogTitle>Create New Note</DialogTitle>
             </DialogHeader>
-            <CreateNote />
+            <CreateNote
+              onNoteCreated={handleNoteCreated}
+              onNoteError={handleNoteFailed}
+            />
           </DialogContent>
         </Dialog>
       </div>

@@ -4,14 +4,21 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Tag } from "lucide-react";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainerWrapper, showToast } from "@/components";
+import LoadingIndicator from "@/components/LoadingIndicator/LoadingIndicator";
 
-const CreateNote: React.FC = () => {
+interface CreateNoteProps {
+  onNoteCreated: () => void;
+  onNoteError: () => void;
+}
+
+export default function CreateNote({
+  onNoteCreated,
+  onNoteError,
+}: CreateNoteProps) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [tags, setTags] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const { user } = useUser();
 
@@ -21,35 +28,38 @@ const CreateNote: React.FC = () => {
       console.error("User ID not available");
       return;
     }
-
+    setIsLoading(true);
     try {
       const res = await fetch("/api/save-note", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId: user.sub,
+          title,
           content,
-          isUser: false,
+          tags: tags.split(",").map((tag) => tag.trim()),
+          isUser: true,
           email: user.email,
           name: user.name,
         }),
       });
 
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      showToast({ message: "Note Saved!", type: "success" });
-      console.log("Note saved successfully");
+      onNoteCreated();
+      setTitle("");
+      setContent("");
+      setTags("");
     } catch (error) {
-      showToast({
-        message: "Error saving note",
-        type: "error",
-      });
       console.error("Error saving note:", error);
+      onNoteError();
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="space-y-4">
-      <ToastContainerWrapper />
+      {isLoading && <LoadingIndicator size={50} color="bg-indigo-500" />}
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
           placeholder="Title"
@@ -89,6 +99,6 @@ const CreateNote: React.FC = () => {
       </form>
     </div>
   );
-};
+}
 
 export { CreateNote };

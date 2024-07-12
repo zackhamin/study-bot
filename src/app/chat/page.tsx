@@ -17,6 +17,7 @@ import "prismjs/components/prism-java";
 import "prismjs/components/prism-csharp";
 import "prismjs/themes/prism.css";
 import { ToastContainerWrapper, showToast } from "@/components";
+import LoadingIndicator from "@/components/LoadingIndicator/LoadingIndicator";
 
 interface Message {
   content: string;
@@ -27,6 +28,7 @@ export default withPageAuthRequired(function ChatPage() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isSessionLoading, setIsLoading] = useState(false);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const { user, error, isLoading } = useUser();
@@ -42,7 +44,7 @@ export default withPageAuthRequired(function ChatPage() {
       console.error("User ID not available");
       return;
     }
-
+    setIsLoading(true);
     try {
       const res = await fetch("/api/save-note", {
         method: "POST",
@@ -58,13 +60,13 @@ export default withPageAuthRequired(function ChatPage() {
 
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       showToast({ message: "Note Saved!", type: "success" });
-      console.log("Note saved successfully");
+      setIsLoading(false);
     } catch (error) {
       showToast({
         message: "Error saving note",
         type: "error",
       });
-      console.error("Error saving note:", error);
+      setIsLoading(false);
     }
   };
 
@@ -194,6 +196,9 @@ export default withPageAuthRequired(function ChatPage() {
           <div ref={messagesEndRef} />
         </div>
         <ToastContainerWrapper />
+        {isSessionLoading && (
+          <LoadingIndicator size={50} color="bg-indigo-500" />
+        )}
         <div className="mt-auto">
           {user ? (
             <form onSubmit={handleSubmit} className="flex space-x-2">
