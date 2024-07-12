@@ -26,7 +26,7 @@ function Sidebar({ isCollapsed, toggleCollapse }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "bg-white h-screen fixed left-0 top-0 shadow-lg transition-all duration-300 flex flex-col",
+        "bg-gray-800  h-screen fixed left-0 top-0 shadow-lg transition-all duration-300 flex flex-col",
         isCollapsed ? "w-16" : "w-64"
       )}
     >
@@ -103,7 +103,7 @@ function SidebarLink({
     <Link
       href={href}
       className={cn(
-        "flex items-center px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600",
+        "flex items-center px-4 py-2 text-white hover:text-indigo-600",
         isCollapsed && "justify-center"
       )}
     >
