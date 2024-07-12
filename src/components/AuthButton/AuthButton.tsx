@@ -26,7 +26,7 @@ export default function AuthButton() {
       onClick={() => (window.location.href = "/api/auth/login")}
       variant="default"
     >
-      Login
+      Sign in
     </Button>
   );
 }

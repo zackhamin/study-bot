@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { NotesCard } from "../NotesCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,17 +15,50 @@ import {
 } from "@/components/ui/dialog";
 import { CreateNote } from "../CreateNote";
 import { Note } from "@/types";
+import { searchNotes } from "../../actions";
 
 export interface NotesPageProps {
-  notes: Note[];
+  initialNotes: Note[];
 }
 
-export default function NotesPage({ notes }: NotesPageProps) {
+export default function NotesPage({ initialNotes }: NotesPageProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [notes, setNotes] = useState(initialNotes);
+  const [isSearching, setIsSearching] = useState(false);
+  const { user } = useUser();
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchTerm) {
+        handleSearch();
+      } else {
+        setNotes(initialNotes);
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm]);
+
+  const handleSearch = async () => {
+    if (!user?.sub) {
+      console.error("User ID not available");
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      const searchResults = await searchNotes(user.sub, searchTerm);
+      setNotes(searchResults as any);
+    } catch (error) {
+      console.error("Error searching notes:", error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
 
   return (
-    <div className="flex flex-col px-4 py-8 h-screen  bg-gradient-to-br from-blue-100 to-purple-100">
+    <div className="flex flex-col px-4 py-8 h-screen bg-gradient-to-br from-blue-100 to-purple-100">
       <div className="flex justify-between items-center mb-6">
         <div className="relative w-full max-w-sm">
           <Input
@@ -55,7 +88,9 @@ export default function NotesPage({ notes }: NotesPageProps) {
           </DialogContent>
         </Dialog>
       </div>
-      {notes.length === 0 ? (
+      {isSearching ? (
+        <p>Searching...</p>
+      ) : notes.length === 0 ? (
         <p>No notes found. Start creating some!</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

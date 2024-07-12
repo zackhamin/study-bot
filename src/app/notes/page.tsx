@@ -5,7 +5,7 @@ export default async function Notes() {
   const notes = await fetchAllNotes();
   if (!notes) return <div>Error fetching notes</div>;
 
-  return <NotesPage notes={notes}></NotesPage>;
+  return <NotesPage initialNotes={notes} />;
 }
 
 async function fetchAllNotes() {

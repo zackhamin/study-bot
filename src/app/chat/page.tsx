@@ -9,13 +9,14 @@ import {
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { formatText } from "../utils/formatText";
-import { Code, Send, LogIn } from "lucide-react";
+import { Send, LogIn } from "lucide-react";
 import { highlight, languages } from "prismjs";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-python";
 import "prismjs/components/prism-java";
 import "prismjs/components/prism-csharp";
 import "prismjs/themes/prism.css";
+import { ToastContainerWrapper, showToast } from "@/components";
 
 interface Message {
   content: string;
@@ -56,9 +57,13 @@ export default withPageAuthRequired(function ChatPage() {
       });
 
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
+      showToast({ message: "Note Saved!", type: "success" });
       console.log("Note saved successfully");
     } catch (error) {
+      showToast({
+        message: "Error saving note",
+        type: "error",
+      });
       console.error("Error saving note:", error);
     }
   };
@@ -188,12 +193,12 @@ export default withPageAuthRequired(function ChatPage() {
           {messages.map((msg, index) => renderMessage(msg, index))}
           <div ref={messagesEndRef} />
         </div>
-
+        <ToastContainerWrapper />
         <div className="mt-auto">
           {user ? (
             <form onSubmit={handleSubmit} className="flex space-x-2">
               <Textarea
-                placeholder="What does asynchronous mean..."
+                placeholder="What is the difference between SQL and no SQL ..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 className="flex-grow p-2 text-lg bg-white text-indigo-900 border-2 border-indigo-300 rounded-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-indigo-400"
@@ -202,7 +207,7 @@ export default withPageAuthRequired(function ChatPage() {
               <Button
                 type="submit"
                 disabled={isSessionLoading}
-                className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition duration-200 ease-in-out self-end"
+                className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 rounded-lg transition duration-200 ease-in-out flex-grow flex items-center justify-center"
               >
                 {isSessionLoading ? (
                   <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
