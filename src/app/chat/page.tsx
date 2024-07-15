@@ -18,6 +18,7 @@ import "prismjs/components/prism-csharp";
 import "prismjs/themes/prism.css";
 import { ToastContainerWrapper, showToast } from "@/components";
 import LoadingIndicator from "@/components/LoadingIndicator/LoadingIndicator";
+import { useConversation } from "@/hooks/useContext";
 
 interface Message {
   content: string;
@@ -28,6 +29,7 @@ export default withPageAuthRequired(function ChatPage() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isSessionLoading, setIsLoading] = useState(false);
+  const { addTurn, conversation } = useConversation();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -73,7 +75,7 @@ export default withPageAuthRequired(function ChatPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!message.trim()) return;
-
+    addTurn("user", message);
     const userMessage = { content: message, isUser: true };
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
@@ -82,13 +84,17 @@ export default withPageAuthRequired(function ChatPage() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({
+          message,
+          conversation: conversation,
+        }),
       });
-
+      console.log(conversation);
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
       const data = await res.json();
       const aiMessage = { content: data.content, isUser: false };
+      addTurn("assistant", aiMessage.content);
       setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
       console.error("Error calling API:", error);
@@ -139,7 +145,6 @@ export default withPageAuthRequired(function ChatPage() {
           </pre>
         </div>
       );
-
       lastIndex = match.index + match[0].length;
     }
 

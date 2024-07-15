@@ -5,6 +5,7 @@ import "./globals.css";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import Layout from "@/components/Layout/Layout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ConversationProvider } from "@/context/conversationContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +19,11 @@ export default function RootLayout({
     <html lang="en">
       <QueryClientProvider client={queryClient}>
         <UserProvider>
-          <body>
-            <Layout>{children}</Layout>
-          </body>
+          <ConversationProvider>
+            <body>
+              <Layout>{children}</Layout>
+            </body>
+          </ConversationProvider>
         </UserProvider>
       </QueryClientProvider>
     </html>
