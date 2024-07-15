@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { NotesCard } from "../NotesCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { PlusCircle, Search } from "lucide-react";
+import { PlusCircle, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -20,16 +21,28 @@ import { ToastContainerWrapper, showToast } from "@/components/Notification";
 
 export interface NotesPageProps {
   initialNotes: Note[];
+  initialPagination: {
+    currentPage: number;
+    totalPages: number;
+    totalCount: number;
+    limit: number;
+  };
 }
 
 export type ToastState = "Success" | "Error" | undefined;
 
-export default function NotesPage({ initialNotes }: NotesPageProps) {
+export default function NotesPage({
+  initialNotes,
+  initialPagination,
+}: NotesPageProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [notes, setNotes] = useState(initialNotes);
   const [isSearching, setIsSearching] = useState(false);
+  const [pagination, setPagination] = useState(initialPagination);
   const { user } = useUser();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleToast = useCallback((state: ToastState) => {
     if (state === "Success") {
@@ -40,16 +53,40 @@ export default function NotesPage({ initialNotes }: NotesPageProps) {
   }, []);
 
   useEffect(() => {
+    const page = searchParams.get("page");
+    if (page && parseInt(page) !== pagination.currentPage) {
+      fetchNotes(parseInt(page));
+    }
+  }, [searchParams]);
+
+  const fetchNotes = async (page: number) => {
+    if (!user?.sub) {
+      console.error("User ID not available");
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `/api/get-notes?userId=${user.sub}&page=${page}&limit=${pagination.limit}`
+      );
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
+      setNotes(data.notes);
+      setPagination(data.pagination);
+    } catch (error) {
+      console.error("Error fetching notes:", error);
+    }
+  };
+
+  useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchTerm) {
         handleSearch();
-      } else {
-        setNotes(initialNotes);
       }
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, initialNotes]);
+  }, [searchTerm]);
 
   const handleSearch = async () => {
     if (!user?.sub) {
@@ -61,6 +98,12 @@ export default function NotesPage({ initialNotes }: NotesPageProps) {
     try {
       const searchResults = await searchNotes(user.sub, searchTerm);
       setNotes(searchResults as any);
+      setPagination({
+        ...pagination,
+        currentPage: 1,
+        totalPages: 1,
+        totalCount: searchResults.length,
+      });
     } catch (error) {
       console.error("Error searching notes:", error);
     } finally {
@@ -68,9 +111,14 @@ export default function NotesPage({ initialNotes }: NotesPageProps) {
     }
   };
 
+  const handlePageChange = (newPage: number) => {
+    router.push(`/notes?page=${newPage}`);
+  };
+
   const handleNoteCreated = useCallback(() => {
     setIsOpen(false);
     handleToast("Success");
+    fetchNotes(1); // Refresh the first page after creating a new note
   }, [handleToast]);
 
   const handleNoteFailed = useCallback(() => {
@@ -117,16 +165,37 @@ export default function NotesPage({ initialNotes }: NotesPageProps) {
       ) : notes.length === 0 ? (
         <p>No notes found. Start creating some!</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {notes.map((note) => (
-            <NotesCard
-              key={note.id}
-              title={note.content.title}
-              content={note.content.content}
-              tags={note.content.tags}
-            />
-          ))}
-        </div>
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {notes.map((note) => (
+              <NotesCard
+                key={note.id}
+                title={note.content.title}
+                content={note.content.content}
+                tags={note.content.tags}
+              />
+            ))}
+          </div>
+          <div className="flex justify-center items-center mt-6">
+            <Button
+              onClick={() => handlePageChange(pagination.currentPage - 1)}
+              disabled={pagination.currentPage === 1}
+              className="mr-2"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span>
+              Page {pagination.currentPage} of {pagination.totalPages}
+            </span>
+            <Button
+              onClick={() => handlePageChange(pagination.currentPage + 1)}
+              disabled={pagination.currentPage === pagination.totalPages}
+              className="ml-2"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </>
       )}
     </div>
   );

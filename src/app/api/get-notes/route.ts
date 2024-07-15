@@ -8,8 +8,10 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
+    const page = parseInt(searchParams.get("page") || "1", 10);
+    const limit = parseInt(searchParams.get("limit") || "12", 10);
 
-    console.log("Received userId:", userId);
+    console.log("Received userId:", userId, "page:", page, "limit:", limit);
 
     if (!userId) {
       console.log("No userId provided");
@@ -24,16 +26,32 @@ export async function GET(request: Request) {
     console.log("Database connection successful");
 
     console.log("Fetching messages for userId:", userId);
-    const messages = await prisma.message.findMany({
-      where: {
-        session: {
-          userId: userId,
+    const skip = (page - 1) * limit;
+
+    const [messages, totalCount] = await Promise.all([
+      prisma.message.findMany({
+        where: {
+          session: {
+            userId: userId,
+          },
         },
-      },
-      include: {
-        session: true,
-      },
-    });
+        include: {
+          session: true,
+        },
+        skip,
+        take: limit,
+        orderBy: {
+          createdAt: "desc",
+        },
+      }),
+      prisma.message.count({
+        where: {
+          session: {
+            userId: userId,
+          },
+        },
+      }),
+    ]);
 
     console.log(`Found ${messages.length} messages`);
 
@@ -55,7 +73,17 @@ export async function GET(request: Request) {
 
     console.log("Successfully parsed messages");
 
-    return NextResponse.json({ notes: parsedMessages });
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return NextResponse.json({
+      notes: parsedMessages,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalCount,
+        limit,
+      },
+    });
   } catch (error: unknown) {
     console.error("Error in /api/get-notes:", error);
 

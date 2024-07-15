@@ -11,9 +11,10 @@ const nextConfig = {
     AUTH0_BASE_URL: process.env.AUTH0_BASE_URL,
     AUTH0_SECRET: process.env.AUTH0_SECRET,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    SYSTEM_PROMPT: process.env.SYSTEM_PROMPT,
   },
   images: {
-    domains: ["lh3.googleusercontent.com"],
+    domains: ["lh3.googleusercontent.com", "s.gravatar.com"],
   },
   plugins: "@tailwindcss/typography",
 };
