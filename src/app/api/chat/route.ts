@@ -54,6 +54,8 @@ c. Explain why the concept is important or how it's used in programming.
 
 9. Avoid outputting XML or any content tags. They are just for your structure
 
+10. When you are forming your response do not output any of the following <exaplanation> <tips> <exercise>
+
 <example>
 This is not a good format for a list Arrays are useful because they allow you to: 1. Store multiple items in a single variable 2. Access items easily using their index 3. Perform operations on multiple items at once
 
