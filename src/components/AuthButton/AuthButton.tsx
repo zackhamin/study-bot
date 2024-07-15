@@ -25,6 +25,7 @@ export default function AuthButton() {
     <Button
       onClick={() => (window.location.href = "/api/auth/login")}
       variant="default"
+      className="bg-purple-900"
     >
       Sign in
     </Button>

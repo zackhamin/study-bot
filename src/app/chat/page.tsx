@@ -18,6 +18,7 @@ import "prismjs/components/prism-csharp";
 import "prismjs/themes/prism.css";
 import { ToastContainerWrapper, showToast } from "@/components";
 import LoadingIndicator from "@/components/LoadingIndicator/LoadingIndicator";
+import { useConversation } from "@/hooks/useContext";
 
 interface Message {
   content: string;
@@ -28,6 +29,7 @@ export default withPageAuthRequired(function ChatPage() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isSessionLoading, setIsLoading] = useState(false);
+  const { addTurn, conversation } = useConversation();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -73,7 +75,7 @@ export default withPageAuthRequired(function ChatPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!message.trim()) return;
-
+    addTurn("user", message);
     const userMessage = { content: message, isUser: true };
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
@@ -82,13 +84,17 @@ export default withPageAuthRequired(function ChatPage() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({
+          message,
+          conversation: conversation,
+        }),
       });
-
+      console.log(conversation);
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
       const data = await res.json();
       const aiMessage = { content: data.content, isUser: false };
+      addTurn("assistant", aiMessage.content);
       setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
       console.error("Error calling API:", error);
@@ -139,7 +145,6 @@ export default withPageAuthRequired(function ChatPage() {
           </pre>
         </div>
       );
-
       lastIndex = match.index + match[0].length;
     }
 
@@ -189,9 +194,9 @@ export default withPageAuthRequired(function ChatPage() {
     );
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 p-4">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-purple-200 to-blue-200  p-4">
       <main className="flex flex-col h-full">
-        <div className="flex flex-col flex-1 h-[calc(100vh-8rem)] overflow-auto bg-white rounded-lg shadow-lg p-4 mb-2">
+        <div className="flex flex-col flex-1 h-[calc(100vh-8rem)] overflow-auto bg-zinc-100 rounded-lg shadow-lg p-4 mb-2">
           {messages.map((msg, index) => renderMessage(msg, index))}
           <div ref={messagesEndRef} />
         </div>
@@ -206,7 +211,7 @@ export default withPageAuthRequired(function ChatPage() {
                 placeholder="What is the difference between SQL and no SQL ..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="flex-grow p-2 text-lg bg-white text-indigo-900 border-2 border-indigo-300 rounded-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-indigo-400"
+                className="flex-grow p-2 text-lg bg-zinc-100  text-indigo-900 border-2 border-indigo-300 rounded-lg focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 placeholder-indigo-400"
                 rows={2}
               />
               <Button

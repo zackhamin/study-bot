@@ -126,7 +126,7 @@ export default function NotesPage({
   }, [handleToast]);
 
   return (
-    <div className="flex flex-col px-4 py-8 h-full bg-gradient-to-br from-blue-100 to-purple-100">
+    <div className="flex flex-col px-4 py-8 h-full bg-gradient-to-br from-purple-200 to-blue-200 ">
       <div className="flex justify-between items-center mb-6">
         <div className="relative w-full max-w-sm">
           <Input
@@ -134,7 +134,7 @@ export default function NotesPage({
             placeholder="Search notes..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-4 py-2 w-full"
+            className="pl-10 pr-4 py-2 w-full bg-white"
           />
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
         </div>
